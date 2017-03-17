@@ -1,4 +1,4 @@
-import pygame, sys, time
+import pygame, sys, time, random
 
 
 
@@ -6,7 +6,7 @@ pygame.init()
 
 display_widht = 800
 display_height = 600
-
+block_size = 10
 
 gameDisplay = pygame.display.set_mode((display_widht,display_height)) #grandezza finestra
 
@@ -28,9 +28,12 @@ def messageToScreen1(message, color):
 def messageToScreen2(message, color):
     text = font.render(message, True, color)
     gameDisplay.blit(text, (display_widht-600, display_height-300))
+def punti(message, color):
+    text = font.render(message, True, color)
+    gameDisplay.blit(text, (display_widht-480, display_height-580))
 
 
-go = 10
+go = 10.0
 stop = 0
 
 clock = pygame.time.Clock()
@@ -41,7 +44,10 @@ def gameLoop():
 	main_y = display_height/2
 	main_x_change = 0
 	main_y_change = 0
-	
+
+	randEnemyX = round(random.randrange(0, display_widht-block_size)/block_size)*block_size #posizione random nemico
+        randEnemyY =round(random.randrange(0, display_height-block_size)/10.)*10.
+
 	gameExit = False
 	gameOver = False
 
@@ -50,7 +56,6 @@ def gameLoop():
 
 	    messageToScreen1("Game Over", white)
             messageToScreen2("premi R per ripetere o Q per chiudere", green)
-
 	    pygame.display.update()
 
 	    for event in pygame.event.get():
@@ -95,14 +100,19 @@ def gameLoop():
 
   	  gameDisplay.fill(red) #imposta lo sfondo rosso
           #disegno bordi e giocatore
-          pygame.draw.rect(gameDisplay, white, (main_x, main_y, 10, 10)) #player
+          pygame.draw.rect(gameDisplay, white, (main_x, main_y, block_size, block_size)) #player
           pygame.draw.rect(gameDisplay, green, (0, 0, 10, 600))
           pygame.draw.rect(gameDisplay, green, (0, 590, 800, 10))
           pygame.draw.rect(gameDisplay, green, (790, 0, 10, 600))
           pygame.draw.rect(gameDisplay, green, (0, 0, 800, 10))
-
-
+          pygame.draw.rect(gameDisplay, black, (randEnemyX, randEnemyY, block_size, block_size)) #nemico
+          punti("Punti=", white)
           pygame.display.update() #ciclo for infinito che aggiorna la finestra 
+
+          if main_x == randEnemyX and main_y == randEnemyY :
+            randEnemyX = round(random.randrange(0, display_widht-block_size)/block_size)*block_size #posizione random nemico
+            randEnemyY =round(random.randrange(0, display_height-block_size)/10.)*10.
+            punti("Punti=", white)
           clock.tick(30)
 
 	pygame.quit()
