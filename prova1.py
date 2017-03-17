@@ -31,7 +31,9 @@ def messageToScreen2(message, color):
 def punti(message, color):
     text = font.render(message, True, color)
     gameDisplay.blit(text, (display_widht-480, display_height-580))
-
+def score(message, color):
+    text = font.render(message, True, color)
+    gameDisplay.blit(text, (display_widht-390, display_height-580))
 
 go = 10.0
 stop = 0
@@ -44,9 +46,9 @@ def gameLoop():
 	main_y = display_height/2
 	main_x_change = 0
 	main_y_change = 0
-
-	randEnemyX = round(random.randrange(0, display_widht-block_size)/block_size)*block_size #posizione random nemico
-        randEnemyY =round(random.randrange(0, display_height-block_size)/10.)*10.
+        n = 0
+	randEnemyX =round(random.randrange(10, display_widht-block_size)/block_size)*block_size #posizione random nemico
+        randEnemyY =round(random.randrange(10, display_height-block_size)/block_size)*block_size
 
 	gameExit = False
 	gameOver = False
@@ -107,12 +109,14 @@ def gameLoop():
           pygame.draw.rect(gameDisplay, green, (0, 0, 800, 10))
           pygame.draw.rect(gameDisplay, black, (randEnemyX, randEnemyY, block_size, block_size)) #nemico
           punti("Punti=", white)
+          score(str(n), white)
           pygame.display.update() #ciclo for infinito che aggiorna la finestra 
 
           if main_x == randEnemyX and main_y == randEnemyY :
-            randEnemyX = round(random.randrange(0, display_widht-block_size)/block_size)*block_size #posizione random nemico
-            randEnemyY =round(random.randrange(0, display_height-block_size)/10.)*10.
-            punti("Punti=", white)
+            randEnemyX = round(random.randrange(10, display_widht-block_size)/block_size)*block_size #posizione random nemico
+            randEnemyY = round(random.randrange(10, display_height-block_size)/block_size)*block_size
+            punti("Punti=", white) #aggiornamento punteggio
+            n = n+10
           clock.tick(30)
 
 	pygame.quit()
